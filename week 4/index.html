@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Professional To-Do App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .input-group input, .input-group button {
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .input-group input[type="text"] {
+      flex: 2;
+      min-width: 200px;
+    }
+
+    .input-group input[type="datetime-local"] {
+      flex: 1.2;
+    }
+
+    .input-group button {
+      flex: 0.5;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .input-group button:hover {
+      background-color: #0056b3;
+    }
+
+    .task-list {
+      margin-top: 20px;
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .task input[type="text"],
+    .task input[type="datetime-local"] {
+      border: none;
+      font-size: 16px;
+      background: none;
+      border-bottom: 1px solid #ccc;
+      outline: none;
+    }
+
+    .task input[type="text"] {
+      width: 60%;
+    }
+
+    .task input[type="datetime-local"] {
+      width: 35%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>To-Do List</h2>
+
+    <div class="input-group">
+      <input id="task-text" type="text" placeholder="Task description">
+      <input id="task-date" type="datetime-local">
+      <button onclick="addTask()">Add</button>
+    </div>
+
+    <div class="task-list" id="task-list"></div>
+  </div>
+
+  <script>
+    const tasks = [];
+
+    function addTask() {
+      const textInput = document.getElementById('task-text');
+      const dateInput = document.getElementById('task-date');
+      const text = textInput.value.trim();
+      const date = dateInput.value;
+
+      if (text) {
+        tasks.push({ text, date });
+        textInput.value = '';
+        dateInput.value = '';
+        renderTasks();
+      }
+    }
+
+    function updateText(index, value) {
+      tasks[index].text = value;
+    }
+
+    function updateDate(index, value) {
+      tasks[index].date = value;
+    }
+
+    function renderTasks() {
+      const list = document.getElementById('task-list');
+      list.innerHTML = '';
+
+      tasks.forEach((task, index) => {
+        const taskDiv = document.createElement('div');
+        taskDiv.className = 'task';
+        taskDiv.innerHTML = `
+          <input type="text" value="${task.text}" onchange="updateText(${index}, this.value)">
+          <input type="datetime-local" value="${task.date}" onchange="updateDate(${index}, this.value)">
+        `;
+        list.appendChild(taskDiv);
+      });
+    }
+  </script>
+</body>
+</html>
